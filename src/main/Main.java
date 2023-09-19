@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -15,7 +16,15 @@ public class Main {
         Scanner input = new Scanner(System.in);
 
         while (true) {
-            run(input);
+            try {
+                run(input);
+            }
+            catch (InputMismatchException e) {
+                System.out.println("Invalid input! Only enter the number of the method you'd like to execute.");
+                System.out.println("Print enter to continue.");
+                input.nextLine();
+                input.nextLine();
+            }
             System.out.println("[y/n] Would you like to execute another method?");
             if (input.nextLine().equals("n"))
                 System.exit(0);
