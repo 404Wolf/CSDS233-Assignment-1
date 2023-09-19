@@ -34,8 +34,9 @@ class StringToolsTest {
     public void testSubstringInsertion() {
         assertEquals("hello world", StringTools.addSubstring("hello", " world", 4));
         assertEquals("Confusing", StringTools.addSubstring("Coning", "fus", 2));
-        assertEquals("", StringTools.addSubstring("", "", 2));
         assertEquals("3", StringTools.addSubstring("", "3", 0));
+        assertThrows(IndexOutOfBoundsException.class, () -> StringTools.addSubstring("", "", 2));
+        assertThrows(IndexOutOfBoundsException.class, () -> StringTools.addSubstring("t", "t", 8));
     }
 
     @Test
@@ -50,5 +51,23 @@ class StringToolsTest {
         assertFalse(StringTools.anagramChecker(",,,", "  "));
         assertFalse(StringTools.anagramChecker("12", "123"));
         assertFalse(StringTools.anagramChecker("light", "right"));
+    }
+
+    @Test
+    public void testOccurrenceCounter() {
+        assertEquals(3, StringTools.occurrenceCounter("ha ha ha", "ha"));
+        assertEquals(2, StringTools.occurrenceCounter("ha ha ha", " "));
+        assertEquals(2, StringTools.occurrenceCounter("this has \"this\" in it twice", "this"));
+        assertEquals(9, StringTools.occurrenceCounter("AABAAA AAAA", "A"));
+    }
+
+    @Test
+    public void sentenceReversal() throws StringTools.InvalidSentenceException {
+        assertEquals("test a is This.", StringTools.sentenceReversal("This is a test."));
+        assertEquals("test a is This", StringTools.sentenceReversal("This is a test"));
+        assertEquals("test a is. This.", StringTools.sentenceReversal("This is. a test."));
+        assertEquals("", StringTools.sentenceReversal(""));
+        assertEquals("12 12 12", StringTools.sentenceReversal("12 12 12"));
+        assertThrows(StringTools.InvalidSentenceException.class, () -> StringTools.sentenceReversal("   "));
     }
 }

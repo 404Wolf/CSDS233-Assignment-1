@@ -1,6 +1,8 @@
 package main;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -118,11 +120,17 @@ public class StringTools {
      * @implSpec Runs in O(i + s) where i is the length of the input string and s is the length of the substring that
      * we are appending. In other words, this method has linear runtime.
      * @return The length of a given input string.
+     * @throws IndexOutOfBoundsException When the index to add the string at exceeds the length of the string, or is
+     * negative.
      * @param input The input string.
      * @param substring The string to insert after the provided index.
      * @param index The index for which to insert a subsequent substring.
      */
-    public static String addSubstring(String input, String substring, int index){
+    public static String addSubstring (String input, String substring, int index) throws IndexOutOfBoundsException {
+        // Throw an error if the index that they want to add the substring at exceeds the length of the string.
+        if (index < 0 || index > input.length())
+            throw new IndexOutOfBoundsException();
+
         // Create a StringBuilder which we'll use to concatenate the strings together without creating many redundant
         // new String objects.
         StringBuilder newStr = new StringBuilder();
@@ -142,4 +150,127 @@ public class StringTools {
         // Convert the StringBuilder back into a String and return the result.
         return newStr.toString();
     }
+
+    /**
+     * Determine length of a string.
+     *
+     * @param string The string to determine the length of.
+     * @return The length of the string.
+     */
+    public static int getLength(String string){
+        return string.length();
+    }
+
+    /**
+     * Count the number of occurrences of a substring in an input string.
+     * @param input The string containing occurrences of a given substring.
+     * @param substring The substring to count occurrences of.
+     * @return The number of occurrences of the substring in the overall string.
+     */
+    public static int occurrenceCounter(String input, String substring){
+        int occurences = 0;
+
+        // A counter to determine our current position in the substring. When we begin to encounter a sequence of
+        // characters that matches that of the beginning of the substring, this will tick upwards until it reaches the
+        // length of the substring.
+        int progression = 0;
+        for (char character : input.toCharArray()) {
+            if (character == substring.charAt(progression)) {
+                if (progression == (substring.length() - 1)) {
+                    // We've matched up the full length of the substring worth of letters, which means we've found an
+                    // occurrence of the substring within the string. We can restart progressing from the start of the
+                    // substring and tick the number of occurrences that we've found so far up by 1.
+                    progression = 0;
+                    occurences++;
+                }
+                else {
+                    // We have matched up another letter between the string and substring, but we aren't quite at the
+                    // end of the substring, so we can't update our occurrence counter yet.
+                    progression++;
+                }
+            }
+            else {
+                // If we're no longer tracking along the substring, we must restart our progress.
+                progression = 0;
+            }
+        }
+
+        // Now that we've progressed all the way through the string and caught all the occurrences as we traversed it, we
+        // can return our current occurrence counter's value
+        return occurences;
+    }
+
+    /**
+     * Reverse the words of a given sentence.
+     *
+     * @implNote If the last character of the input string is a period, the output string's last character will also be
+     * a period. This is to assert consistency with the assignment instruction's example.
+     * @throws InvalidSentenceException When there are multiple back to back separators in the string.
+     * @param sentence The sentence to have its words reversed.
+     * @return The sentence with its words in reverse order.
+     */
+    public static String sentenceReversal(String sentence, char separator) throws InvalidSentenceException{
+        // If the string is empty we don't need to do any work.
+        if (sentence.isEmpty())
+            return sentence;
+
+        // Create an array to store the separated list of words in the sentence, and a flag for whether the input string
+        // originally ended with a period.
+        boolean endsWithPeriod = sentence.charAt(sentence.length() - 1) == '.';
+        String[] words = new String[occurrenceCounter(sentence, String.valueOf(separator)) + 1];
+
+        // Iterate through the string and store all the separate words in the words array.
+        int occurrencesSoFar = 0;
+        StringBuilder currentWord = new StringBuilder();
+        for (char character : sentence.toCharArray()) {
+            if (character == separator) {
+                if (currentWord.isEmpty())
+                    throw new InvalidSentenceException();
+                words[occurrencesSoFar++] = currentWord.toString();
+                currentWord.setLength(0);
+            }
+            else
+                currentWord.append(character);
+        }
+
+        // If the last word ends in a period, strip off the period. We'll add a period to the end of the output string
+        // later.
+        if (currentWord.charAt(currentWord.length() - 1) == '.') {
+            currentWord.setLength(currentWord.length() - 1);
+            words[words.length - 1] = currentWord.toString();
+        }
+        else
+            words[words.length - 1] = currentWord.toString();
+
+        // Now we reverse the order of the words array by swapping elements.
+        for (int i = 0; i < words.length; i++) {
+            if (i < words.length / 2) {
+                String temp = words[i];
+                words[i] = words[words.length - 1 - i];
+                words[words.length - 1 - i] = temp;
+            }
+        }
+
+        // Now we build back the output string by adding the separator between elements.
+        StringBuilder output = new StringBuilder();
+        for (String word : words) {
+            output.append(word);
+            output.append(separator);
+        }
+
+        // Cut off the trailing separator
+        output.setLength(output.length() - 1);
+
+        // Append a period if the string originally ended with a period.
+        if (endsWithPeriod)
+            output.append('.');
+
+        return output.toString();
+    }
+
+    public static String sentenceReversal(String sentence) throws InvalidSentenceException{
+        return sentenceReversal(sentence, ' ');
+    }
+
+    public static class InvalidSentenceException extends Exception {}
 }

@@ -6,13 +6,28 @@ import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.Scanner;
 
+/**
+ * NOTE: Use -parameters flag when compiling to preserve parameter names for terminal UI.
+ */
+
 public class Main {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
 
+        while (true) {
+            run(input);
+            System.out.println("[y/n] Would you like to execute another method?");
+            if (input.nextLine().equals("n"))
+                System.exit(0);
+        }
+    }
+
+    public static void run(Scanner input) {
+        // Greet the user.
         System.out.println("Welcome to Wolf's string utility program!");
         System.out.println("To begin, select a mode from the following options:");
 
+        // Load in the methods that the user should be able to call using reflection.
         Class<StringTools> stringToolsClass = StringTools.class;
         Method[] stringToolsMethods = stringToolsClass.getDeclaredMethods();
 
@@ -35,8 +50,8 @@ public class Main {
             System.out.println();
             System.out.println(
                     "Great choice! This method requires " +
-                    chosenMethodParams.length +
-                    " param" + (chosenMethodParams.length > 0 ? "" : "s") + ":"
+                            chosenMethodParams.length +
+                            " param" + (chosenMethodParams.length > 0 ? "" : "s") + ":"
             );
             for (String chosenMethodNameString : chosenMethodParamStrings)
                 System.out.println(chosenMethodNameString);
