@@ -4,35 +4,33 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.function.Function;
 
+/**
+ * A collection of methods that can be run on strings.
+ */
 public class StringTools {
     /**
      * Determine whether a given input string is a palindrome.
-     * Time complexity: O(n), where n is input.length().
      *
+     * @implSpec Runs in O(n) where n is the length of the input string.
      * @implNote Implemented iteratively.
      * @param input The input string to test for whether it's a palindrome.
      * @return Whether the input string is a palindrome.
      */
-    public static final String[] methods = new String[]{
-            "palindromeIterative",
-            "palindromeRecursive",
-            "anagramChecker",
-            "addSubstring"
-    };
-
     public static boolean palindromeIterative(String input) {
         if (input.length() <= 1)
             return true;
+
+        // Create an array of characters for the input to save on lookups for chars.
+        char[] inputCharArray = input.toCharArray();
 
         // Let i be an offset from the start and end of the string. We then compare the i-th index char from the left
         // to the i-th index char on the right. If they are not the same then we've determined that this string is not
         // a palindrome and do not need to proceed any further. If we make it up to the point where we've finished
         // checking the left half of the string (i = floor(input length / 2)), we can stop since we've tested every char
         // against its complementary right-side char.
-        for (int i = 0; i < input.length() / 2; i++)
-            if (input.charAt(i) != input.charAt(input.length() - 1 - i))
+        for (int i = 0; i < inputCharArray.length / 2; i++)
+            if (inputCharArray[i] != inputCharArray[input.length() - 1 - i])
                 return false;
 
         // All the chars have been tested against their complementary right-side chars. The string has been determined
@@ -45,6 +43,7 @@ public class StringTools {
      * Time complexity: O(n), where n is input.length().
      *
      * @implNote Implemented recursively.
+     * @implSpec Runs in O(n) where n is the length of the input string.
      * @param input The input string to test for whether it's a palindrome.
      * @return Whether the input string is a palindrome.
      */
@@ -237,10 +236,8 @@ public class StringTools {
         // later.
         if (currentWord.charAt(currentWord.length() - 1) == '.') {
             currentWord.setLength(currentWord.length() - 1);
-            words[words.length - 1] = currentWord.toString();
         }
-        else
-            words[words.length - 1] = currentWord.toString();
+        words[words.length - 1] = currentWord.toString();
 
         // Now we reverse the order of the words array by swapping elements.
         for (int i = 0; i < words.length; i++) {
@@ -258,7 +255,7 @@ public class StringTools {
             output.append(separator);
         }
 
-        // Cut off the trailing separator
+        // Cut off the trailing separator.
         output.setLength(output.length() - 1);
 
         // Append a period if the string originally ended with a period.
