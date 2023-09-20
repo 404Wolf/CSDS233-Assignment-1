@@ -46,8 +46,14 @@ public class UserInput {
         Method[] stringToolsMethods = stringToolsClass.getDeclaredMethods();
 
         // Print out all the available methods for the user to choose from using reflection.
-        for (int i = 0; i < stringToolsMethods.length; i++)
-            System.out.println("[" + (i + 1) + "]" + " - " + stringToolsMethods[i].getName());
+        for (int i = 0; i < stringToolsMethods.length; i++) {
+            String currentMethodName = stringToolsMethods[i].getName();
+            if (currentMethodName.contains("Recursive"))
+                currentMethodName += " (equally fast; preferred)";
+            else if (currentMethodName.contains("Iterative"))
+                currentMethodName += " (equally fast; not preferred)";
+            System.out.println("[" + (i + 1) + "]" + " - " + currentMethodName);
+        }
 
         // Get the user's choice of method to use. User was presented options in index-1, so we must shift down the
         // index by 1 to return to index-0.

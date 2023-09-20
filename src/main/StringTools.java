@@ -1,18 +1,19 @@
 package main;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 /**
  * A collection of methods that can be run on strings.
  */
 public class StringTools {
+    public static final char[] punctuation = new char[]{'.', '?', '!'};
+
+
     /**
      * Determine whether a given input string is a palindrome.
      *
-     * @implSpec Runs in O(n) where n is the length of the input string.
+     * @implSpec Runs in O(n) where n is input.length().
      * @implNote Implemented iteratively.
      * @param input The input string to test for whether it's a palindrome.
      * @return Whether the input string is a palindrome.
@@ -202,8 +203,8 @@ public class StringTools {
     /**
      * Reverse the words of a given sentence.
      *
-     * @implNote If the last character of the input string is a period, the output string's last character will also be
-     * a period. This is to assert consistency with the assignment instruction's example.
+     * @implNote If the last character of the input string is a punctuation sign, the output string's last character
+     * will also be the punctuation mark. This is to assert consistency with the assignment instruction's example.
      * @throws InvalidSentenceException When there are multiple back to back separators in the string.
      * @param sentence The sentence to have its words reversed.
      * @return The sentence with its words in reverse order.
@@ -215,7 +216,19 @@ public class StringTools {
 
         // Create an array to store the separated list of words in the sentence, and a flag for whether the input string
         // originally ended with a period.
-        boolean endsWithPeriod = sentence.charAt(sentence.length() - 1) == '.';
+        char endingPunctuation = ' ';
+        switch (sentence.charAt(sentence.length() - 1)) {
+            case '.':
+                endingPunctuation = '.';
+                break;
+            case '?':
+                endingPunctuation = '?';
+                break;
+            case '!':
+                endingPunctuation = '!';
+                break;
+        }
+
         String[] words = new String[occurrenceCounter(sentence, String.valueOf(separator)) + 1];
 
         // Iterate through the string and store all the separate words in the words array.
@@ -259,8 +272,8 @@ public class StringTools {
         output.setLength(output.length() - 1);
 
         // Append a period if the string originally ended with a period.
-        if (endsWithPeriod)
-            output.append('.');
+        if (endingPunctuation != ' ')
+            output.append(endingPunctuation);
 
         return output.toString();
     }
