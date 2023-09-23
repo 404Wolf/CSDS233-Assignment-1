@@ -65,9 +65,9 @@ class StringToolsTest {
     public void sentenceReversal() throws StringTools.InvalidSentenceException {
         assertEquals("test a is This.", StringTools.sentenceReversal("This is a test."));
         assertEquals("test a is This", StringTools.sentenceReversal("This is a test"));
-        assertEquals("test a is. This.", StringTools.sentenceReversal("This is. a test."));
         assertEquals("", StringTools.sentenceReversal(""));
         assertEquals("12 12 12", StringTools.sentenceReversal("12 12 12"));
+        assertEquals("This, is a test!", StringTools.sentenceReversal("test a is This,!"));
         assertThrows(StringTools.InvalidSentenceException.class, () -> StringTools.sentenceReversal("   "));
     }
 }

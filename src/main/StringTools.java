@@ -1,13 +1,15 @@
 package main;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * A collection of methods that can be run on strings.
  */
 public class StringTools {
-    public static final char[] punctuation = new char[]{'.', '?', '!'};
+    public static final Set<Character> punctuation = new PunctuationSet();
 
 
     /**
@@ -216,18 +218,9 @@ public class StringTools {
 
         // Create an array to store the separated list of words in the sentence, and a flag for whether the input string
         // originally ended with a period.
-        char endingPunctuation = ' ';
-        switch (sentence.charAt(sentence.length() - 1)) {
-            case '.':
-                endingPunctuation = '.';
-                break;
-            case '?':
-                endingPunctuation = '?';
-                break;
-            case '!':
-                endingPunctuation = '!';
-                break;
-        }
+        char endingPunctuation = sentence.charAt(sentence.length() - 1);
+        if (!punctuation.contains(sentence.charAt(sentence.length() - 1)))
+            endingPunctuation = ' ';
 
         String[] words = new String[occurrenceCounter(sentence, String.valueOf(separator)) + 1];
 
@@ -241,7 +234,7 @@ public class StringTools {
                 words[occurrencesSoFar++] = currentWord.toString();
                 currentWord.setLength(0);
             }
-            else
+            else if (!punctuation.contains(character))
                 currentWord.append(character);
         }
 
@@ -283,4 +276,13 @@ public class StringTools {
     }
 
     public static class InvalidSentenceException extends Exception {}
+
+    public static class PunctuationSet extends HashSet<Character> {
+        public PunctuationSet() {
+            super();
+            add('.');
+            add('?');
+            add('!');
+        }
+    }
 }
