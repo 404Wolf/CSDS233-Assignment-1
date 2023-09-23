@@ -210,7 +210,7 @@ public class StringTools {
      * @param sentence The sentence to have its words reversed.
      * @return The sentence with its words in reverse order.
      */
-    public static String sentenceReversal(String sentence, char separator) throws InvalidSentenceException{
+    public static String sentenceReversal(String sentence) throws InvalidSentenceException{
         // If the string is empty we don't need to do any work.
         if (sentence.isEmpty())
             return sentence;
@@ -221,13 +221,13 @@ public class StringTools {
         if (!punctuation.contains(sentence.charAt(sentence.length() - 1)))
             endingPunctuation = ' ';
 
-        String[] words = new String[occurrenceCounter(sentence, String.valueOf(separator)) + 1];
+        String[] words = new String[occurrenceCounter(sentence, String.valueOf(' ')) + 1];
 
         // Iterate through the string and store all the separate words in the words array.
         int occurrencesSoFar = 0;
         StringBuilder currentWord = new StringBuilder();
         for (char character : sentence.toCharArray()) {
-            if (character == separator) {
+            if (character == ' ') {
                 if (currentWord.isEmpty())
                     throw new InvalidSentenceException();
                 words[occurrencesSoFar++] = currentWord.toString();
@@ -257,7 +257,7 @@ public class StringTools {
         StringBuilder output = new StringBuilder();
         for (String word : words) {
             output.append(word);
-            output.append(separator);
+            output.append(' ');
         }
 
         // Cut off the trailing separator.
@@ -268,10 +268,6 @@ public class StringTools {
             output.append(endingPunctuation);
 
         return output.toString();
-    }
-
-    public static String sentenceReversal(String sentence) throws InvalidSentenceException{
-        return sentenceReversal(sentence, ' ');
     }
 
     public static class InvalidSentenceException extends Exception {}
