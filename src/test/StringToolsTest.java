@@ -7,11 +7,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class StringToolsTest {
     private final String[] palindromes = new String[] {
-        "racecar", "hannah", "", "- -", " ", "anna", "baaaaaaaaab  baaaaaaaaab"
+        "racecar", "hannah", "nurses run", "5nurses run5", "Nurses run", "", "- -", " ", "anna", "baaaaaaab  baaaaaaab"
     };
 
     private final String[] notPalindromes = new String[] {
-        "racecars", "banana", "w ", "- --", " .", "this is not a palindrome", "aaaaaaaaaa baaaaaaaaa"
+        "racecars", "banana", "- .--", "5nurses run", "this is not a palindrome", "aaaaaaaa baaaaaaaaa"
     };
 
     @Test

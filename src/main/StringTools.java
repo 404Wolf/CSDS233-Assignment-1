@@ -12,6 +12,18 @@ public class StringTools {
     public static final Set<Character> punctuation = new PunctuationSet();
 
     /**
+     * Sanitize a string for use in palindrome checkers.
+     * @implNote Removes all spaces and makes the string lowercase.
+     * @param input The input string.
+     * @return The sanitized string.
+     */
+    private static String cleanPalindromeString(String input) {
+        input = input.replaceAll(" ", "");
+        input = input.toLowerCase();
+        return input;
+    }
+    
+    /**
      * Determine whether a given input string is a palindrome.
      *
      * @implSpec Runs in O(n) where n is input.length().
@@ -20,6 +32,10 @@ public class StringTools {
      * @return Whether the input string is a palindrome.
      */
     public static boolean palindromeIterative(String input) {
+        // Sanitize the input for palinrome checking.
+        input = cleanPalindromeString(input);
+        System.out.println(input);
+        
         if (input.length() <= 1)
             return true;
 
@@ -50,11 +66,15 @@ public class StringTools {
      * @return Whether the input string is a palindrome.
      */
     public static boolean palindromeRecursive(String input) {
+        // Sanitize the input for palinrome checking.
+        input = cleanPalindromeString(input);
+
         // All strings of length 0 or 1 are palindromes.
         // This case will occur when the input string is very short, or when the recursion has whittled down the string
         // to length 0 or 1. It is our base case.
         if (input.length() <= 1)
             return true;
+
         // If the string has not yet reached the length at which it is guaranteed to be a palindrome, see if we can
         // whittle it down any further. If the leftmost char of the string does NOT match the rightmost char of the
         // string, the entire string is definitely not a palindrome, so we can stop and return false. Otherwise, whittle
