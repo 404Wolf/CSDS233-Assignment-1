@@ -82,10 +82,19 @@ public class Main {
             // Consume the lingering \n that .nextInt() did not consume.
             input.nextLine();
 
-            String[] arguments = new String[chosenMethodParams.length];
+            Object[] arguments = new Object[chosenMethodParams.length];
             for (int i = 0; i < chosenMethodParams.length; i++) {
                 System.out.println("Enter parameter #" + (i + 1) + " and then press enter.");
+
                 arguments[i] = input.nextLine();
+                if (chosenMethodParams[i].getType().equals(int.class)) {
+                    try {
+                        arguments[i] = Integer.parseInt((String) arguments[i]);
+                    }
+                    catch (NumberFormatException e) {
+                        throw new InputMismatchException();
+                    }
+                }
             }
 
             System.out.println("Alright, executing method with provided params...");

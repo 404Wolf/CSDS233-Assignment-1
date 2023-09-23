@@ -11,7 +11,6 @@ import java.util.Set;
 public class StringTools {
     public static final Set<Character> punctuation = new PunctuationSet();
 
-
     /**
      * Determine whether a given input string is a palindrome.
      *
